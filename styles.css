@@ -1,3 +1,28 @@
+/* ===== CORRECCIÓN PARA PWA INSTALADA ===== */
+html, body {
+    width: 100%;
+    height: 100%;
+    min-height: 100vh;
+    min-height: -webkit-fill-available;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+body {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(180deg, #f0faf5 0%, #e8f5ed 100%);
+    color: #1a2e24;
+    -webkit-font-smoothing: antialiased;
+}
+
 /* ===== RESET Y VARIABLES ===== */
 :root {
     --primary: #059669;
@@ -31,18 +56,6 @@
 input {
     -webkit-user-select: text;
     user-select: text;
-}
-
-body {
-    width: 100%;
-    height: 100vh;
-    height: -webkit-fill-available;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background: linear-gradient(180deg, #f0faf5 0%, #e8f5ed 100%);
-    color: var(--text);
-    overflow-x: hidden;
-    overscroll-behavior: none;
-    -webkit-font-smoothing: antialiased;
 }
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
@@ -558,6 +571,49 @@ body {
     color: #8ab5a0;
     padding: 0 0 0 12px;
     line-height: 1;
+}
+
+/* ===== BOTÓN DE INSTALACIÓN ===== */
+.install-button {
+    display: none;
+    position: fixed;
+    bottom: 24px;
+    left: 20px;
+    right: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, #059669, #047857);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    z-index: 9999;
+    box-shadow: 0 8px 32px rgba(5, 150, 105, 0.4);
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+}
+
+.install-button.show {
+    display: flex;
+    animation: slideUp 0.3s ease;
+}
+
+.install-button:active {
+    transform: scale(0.97);
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(100px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
 }
 
 /* ===== SCROLLBAR ===== */
