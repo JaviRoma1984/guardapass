@@ -1,5 +1,12 @@
 /* ===== CORRECCIÓN PARA PWA INSTALADA ===== */
-html, body {
+html {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+body {
     width: 100%;
     height: 100%;
     min-height: 100vh;
@@ -7,14 +14,6 @@ html, body {
     margin: 0;
     padding: 0;
     overflow-x: hidden;
-}
-
-body {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
@@ -42,6 +41,7 @@ body {
     --border-light: #e8f5ed;
     --radius: 12px;
     --safe-bottom: env(safe-area-inset-bottom, 0px);
+    --safe-top: env(safe-area-inset-top, 0px);
 }
 
 * {
@@ -60,22 +60,40 @@ input {
 
 /* ===== CONTENEDOR PRINCIPAL ===== */
 .app-container {
+    display: flex;
+    flex-direction: column;
     padding: 20px;
+    padding-top: calc(20px + var(--safe-top));
     padding-bottom: calc(20px + var(--safe-bottom));
     min-height: 100vh;
     min-height: -webkit-fill-available;
     max-width: 480px;
     margin: 0 auto;
+    justify-content: center;
 }
 
 /* ===== PANTALLAS ===== */
 .screen {
     display: none !important;
     animation: fadeIn 0.25s ease;
+    flex: 1;
 }
 
 .screen.active {
-    display: block !important;
+    display: flex !important;
+    flex-direction: column;
+}
+
+#main-screen.active {
+    justify-content: center;
+    align-items: center;
+}
+
+#create-screen.active,
+#list-screen.active,
+#detail-screen.active,
+#edit-screen.active {
+    justify-content: flex-start;
 }
 
 @keyframes fadeIn {
@@ -86,7 +104,8 @@ input {
 /* ===== PANTALLA PRINCIPAL ===== */
 .welcome-section {
     text-align: center;
-    padding: 40px 0 30px;
+    padding: 20px 0;
+    width: 100%;
 }
 
 .welcome-icon {
@@ -119,6 +138,7 @@ input {
     flex-direction: row;
     gap: 16px;
     margin-top: 20px;
+    width: 100%;
 }
 
 .btn-main {
@@ -162,6 +182,7 @@ input {
     align-items: center;
     gap: 14px;
     margin-bottom: 24px;
+    width: 100%;
 }
 
 .screen-header h2 {
@@ -184,6 +205,7 @@ input {
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
 }
 
 .btn-back-header:active {
@@ -192,8 +214,13 @@ input {
 }
 
 /* ===== FORMULARIOS ===== */
+form {
+    width: 100%;
+}
+
 .input-group {
     margin-bottom: 18px;
+    width: 100%;
 }
 
 .input-group label {
@@ -224,6 +251,7 @@ input {
 
 .password-wrapper {
     position: relative;
+    width: 100%;
 }
 
 .password-wrapper input {
@@ -275,9 +303,10 @@ input {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    max-height: calc(100vh - 140px);
+    flex: 1;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
+    width: 100%;
 }
 
 .list-item {
@@ -289,6 +318,7 @@ input {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     transition: all 0.2s ease;
+    width: 100%;
 }
 
 .list-item:active {
@@ -321,6 +351,7 @@ input {
     display: flex;
     gap: 6px;
     margin-left: 12px;
+    flex-shrink: 0;
 }
 
 /* ===== BOTONES DE ICONO ===== */
@@ -337,6 +368,7 @@ input {
     color: var(--text-secondary);
     transition: all 0.2s ease;
     -webkit-tap-highlight-color: transparent;
+    flex-shrink: 0;
 }
 
 .btn-icon-sm:active {
@@ -356,6 +388,7 @@ input {
     border-radius: var(--radius);
     padding: 20px;
     margin-bottom: 18px;
+    width: 100%;
 }
 
 .detail-row {
@@ -606,14 +639,8 @@ input {
 }
 
 @keyframes slideUp {
-    from {
-        transform: translateY(100px);
-        opacity: 0;
-    }
-    to {
-        transform: translateY(0);
-        opacity: 1;
-    }
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
 /* ===== SCROLLBAR ===== */
