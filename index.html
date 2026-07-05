@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta name="theme-color" content="#059669">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="GuardaPass">
+    <meta name="mobile-web-app-capable" content="yes">
+    <link rel="apple-touch-icon" href="/guardapass/icons/icon192-maskable.png">
+    <link rel="manifest" href="/guardapass/manifest.json">
+    <title>GuardaPass - Gestor de Contraseñas</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Pantalla de Bloqueo (crear / desbloquear contraseña maestra) -->
+        <div id="lock-screen" class="screen active">
+            <div class="lock-content">
+                <div class="welcome-icon lock-icon">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        <circle cx="12" cy="16" r="1"></circle>
+                    </svg>
+                </div>
+                <h2 id="lock-title">Desbloquear</h2>
+                <p id="lock-subtitle">Introduce tu contraseña maestra</p>
+                <form id="lock-form">
+                    <div class="input-group">
+                        <div class="password-wrapper">
+                            <input type="password" id="master-password" placeholder="Contraseña maestra" required autocomplete="off">
+                            <button type="button" id="toggle-master-password" class="btn-icon-sm password-toggle" title="Mostrar contraseña">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="input-group" id="master-confirm-group" style="display:none;">
+                        <div class="password-wrapper">
+                            <input type="password" id="master-password-confirm" placeholder="Repite la contraseña maestra" autocomplete="off">
+                        </div>
+                    </div>
+                    <p id="lock-warning" class="lock-warning" style="display:none;">Si olvidas esta contraseña no podrás recuperar tus claves. No hay forma de restablecerla.</p>
+                    <p id="lock-error" class="lock-error" style="display:none;"></p>
+                    <button type="submit" id="lock-submit" class="btn-full btn-save">Desbloquear</button>
+                </form>
+                <button id="biometric-unlock-btn" class="btn-full btn-biometric" style="display:none;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 11a2 2 0 0 0-2 2c0 1.02-.1 2.51-.26 4"></path>
+                        <path d="M12 6a7 7 0 0 1 7 7c0 .5 0 1-.05 1.5"></path>
+                        <path d="M5 13a7 7 0 0 1 3.5-6.06"></path>
+                        <path d="M7 20.66C7.5 19 8 17 8 13a4 4 0 0 1 8 0c0 1"></path>
+                        <path d="M16 18c-.2 1-.5 2-1 3"></path>
+                        <path d="M3 10a10 10 0 0 1 3-3.5"></path>
+                        <path d="M18 3.5A10 10 0 0 1 21 10"></path>
+                    </svg>
+                    Usar huella / biometría
+                </button>
+            </div>
+        </div>
+
+        <!-- Pantalla Principal -->
+        <div id="main-screen" class="screen">
+            <div class="welcome-section">
+                <div class="welcome-icon">
+                    <svg width="50" height="50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        <circle cx="12" cy="16" r="1"></circle>
+                    </svg>
+                </div>
+                <h2>GuardaPass</h2>
+                <p>Gestiona tus contraseñas de forma segura</p>
+            </div>
+            <div class="action-buttons">
+                <button id="create-btn" class="btn-main btn-create" title="Crear una nueva entrada">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                    </svg>
+                    <span>Crear Nueva</span>
+                </button>
+                <button id="list-btn" class="btn-main btn-list" title="Ver todas las entradas">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                    <span>Agenda</span>
+                </button>
+            </div>
+            <div class="main-extra">
+                <button id="enable-biometric-btn" class="btn-text" style="display:none;">Activar desbloqueo con huella</button>
+                <button id="disable-biometric-btn" class="btn-text" style="display:none;">Desactivar desbloqueo con huella</button>
+                <button id="lock-now-btn" class="btn-text">Bloquear ahora</button>
+            </div>
+        </div>
+
+        <!-- Pantalla de Creación -->
+        <div id="create-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back-header" id="back-from-create" title="Volver">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <h2>Nueva Entrada</h2>
+            </div>
+            <form id="create-form">
+                <div class="input-group">
+                    <label for="website">Sitio web / App / Programa</label>
+                    <input type="text" id="website" placeholder="ejemplo.com" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" placeholder="usuario@email.com" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="password">Contraseña</label>
+                    <input type="password" id="password" placeholder="Contraseña" required autocomplete="off">
+                </div>
+                <button type="submit" id="save-btn" class="btn-full btn-save" title="Guardar entrada">
+                    Guardar Entrada
+                </button>
+            </form>
+        </div>
+
+        <!-- Pantalla de Listado -->
+        <div id="list-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back-header" id="back-from-list" title="Volver">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <h2>Agenda</h2>
+            </div>
+            <div id="websites-list" class="list-container"></div>
+        </div>
+
+        <!-- Pantalla de Detalle -->
+        <div id="detail-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back-header" id="back-from-detail" title="Volver">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <h2>Detalles</h2>
+            </div>
+            <div class="detail-content">
+                <div class="detail-row">
+                    <span class="detail-label">Sitio web / App / Programa</span>
+                    <span id="detail-website" class="detail-text"></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Usuario</span>
+                    <div class="detail-action">
+                        <span id="detail-username" class="detail-text"></span>
+                        <button id="copy-username" class="btn-icon-sm" title="Copiar usuario">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Contraseña</span>
+                    <div class="detail-action">
+                        <span id="detail-password" class="detail-text password-masked">••••••••</span>
+                        <button id="toggle-password" class="btn-icon-sm" title="Mostrar contraseña">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                        <button id="copy-password" class="btn-icon-sm" title="Copiar contraseña">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <button id="edit-btn" class="btn-full btn-edit" title="Editar esta entrada">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                </svg>
+                Editar Entrada
+            </button>
+        </div>
+
+        <!-- Pantalla de Edición -->
+        <div id="edit-screen" class="screen">
+            <div class="screen-header">
+                <button class="btn-back-header" id="back-from-edit" title="Volver">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
+                <h2>Editar Entrada</h2>
+            </div>
+            <form id="edit-form">
+                <div class="input-group">
+                    <label for="edit-website">Sitio web / App / Programa</label>
+                    <input type="text" id="edit-website" placeholder="ejemplo.com" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="edit-username">Usuario</label>
+                    <input type="text" id="edit-username" placeholder="usuario@email.com" required autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="edit-password">Contraseña</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="edit-password" placeholder="Contraseña" required autocomplete="off">
+                        <button type="button" id="toggle-edit-password" class="btn-icon-sm password-toggle" title="Mostrar contraseña">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                <circle cx="12" cy="12" r="3"></circle>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <button type="submit" id="update-btn" class="btn-full btn-save" title="Guardar cambios">
+                    Guardar Cambios
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de eliminación -->
+    <div id="delete-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-icon">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+                    <line x1="12" y1="9" x2="12" y2="13"></line>
+                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                </svg>
+            </div>
+            <h3>¿Eliminar entrada?</h3>
+            <p id="delete-website-name" class="delete-name"></p>
+            <p class="delete-warning">Esta acción no se puede deshacer</p>
+            <div class="modal-buttons">
+                <button id="confirm-delete" class="btn-modal btn-delete-confirm" title="Eliminar permanentemente">Eliminar</button>
+                <button id="cancel-delete" class="btn-modal btn-cancel" title="Cancelar">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón de instalación -->
+    <button id="install-btn" class="install-button" title="Instalar GuardaPass en tu dispositivo">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+            <polyline points="7 10 12 15 17 10"></polyline>
+            <line x1="12" y1="15" x2="12" y2="3"></line>
+        </svg>
+        Instalar App
+    </button>
+
+    <script src="app.js"></script>
+</body>
+</html>
